@@ -1,0 +1,8 @@
+/* selector {property: value;} 
+  element selector ex h1,p, a, etc
+  id selector if element has id of myID #myId is the selector 
+  class selector if element has class of myClass then the selector is gonna be .myClass
+*/
+h1 {
+  color: blue;
+}

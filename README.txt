@@ -8,6 +8,8 @@ HTML is based on XML
  h1 -> a tag used to represent Header 1
  Ex <h1>Some text</h1>
  
+ block element  - div
+ inline element - span
  Image - img
  Headings - h1,h2,h3,...h6
  Paragraphs - p
@@ -15,5 +17,5 @@ HTML is based on XML
  Links -a
  Bullets - ul ,li
  Numbers -ol,li
- Tables - table, tr, td
+ Tables - table, tr, th, td
  button - input, button
