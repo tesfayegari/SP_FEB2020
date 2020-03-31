@@ -19,3 +19,7 @@ HTML is based on XML
  Numbers -ol,li
  Tables - table, tr, th, td
  button - input, button
+
+ Cascading Style Sheets
+ Cascading Style Sheets, fondly referred to as CSS, is a simply designed language intended to simplify the process of making web pages presentable. CSS allows you to apply styles to web pages. More importantly, CSS enables you to do this independent of the HTML that makes up each web page
+ 
