@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+  <style>
+    #myJumbotron {
+      padding: 1rem;
+    }
+    #myJumbotron input[type=button], 
+    #myJumbotron input[type=reset], 
+    #myJumbotron input[type=submit], 
+    #myJumbotron button {
+      min-width: 0em;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div  class="jumbotron text-center mt-5">
+    <h1>Backlog Tasks List</h1>
+    <p>List of Tasks which needs to be completed when we are back to office after COVID-19</p>
+  </div>
+
+  <div id="myJumbotron" class="container">
+    <!-- New task and Search row  -->
+    <div class="row">
+      <!-- new task col  -->
+      <div class="col">
+        <button type="button" class="btn btn-primary">Log New Task</button>
+        <button type="button" class="btn btn-primary"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+      </div>
+      <!-- search area col  -->
+      <div class="col">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="searchText" placeholder="Search Tasks ...">
+          <div class="input-group-append">
+            <button class="btn btn-dark" type="submit"><i class="fa fa-search-plus" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Table Row  -->
+    <div class="row">
+      <div class="col">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Task Name</th>
+              <th>Description</th>
+              <th>View/Edit/Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John</td>
+              <td>Doe</td>
+              <td>
+                <button class="btn btn-success" type="submit"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                <button class="btn btn-primary" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                <button class="btn btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>Mary</td>
+              <td>Moe</td>
+              <td>
+                <button class="btn btn-success" type="submit"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                <button class="btn btn-primary" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                <button class="btn btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>July</td>
+              <td>Dooley</td>
+              <td>
+                <button class="btn btn-success" type="submit"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                <button class="btn btn-primary" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                <button class="btn btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--End of Table row-->
+    <!-- Pagination row start  -->
+    <div class="row">
+      <div class="col">
+        <ul class="pagination justify-content-center">
+          <li class="page-item disabled"><a class="page-link" href="javascript:void(0);">Previous</a></li>
+          <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
+          <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
+          <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
+        </ul>
+      </div>
+    </div>
+    <!--Pagination row end -->
+  </div>
+
+
+</body>
+
+</html>
