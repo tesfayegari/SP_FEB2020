@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>jQuery Demo</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   -->
 </head>
 
 <body>
@@ -22,16 +22,16 @@
     <div class="myForm">
       <div class="row">
         <div class="col">
-          <input type="text" id="first" class="form-control" placeholder="First ">
+          <input type="text" class="form-control" placeholder="First ">
         </div>
         <div class="col">
-          <input type="text" id="second" class="form-control" placeholder="Last ">
+          <input type="text" class="form-control" placeholder="Last ">
         </div>
         <div class="col">
-          <input type="text" id="handle" class="form-control" placeholder="Handle ">
+          <input type="text" class="form-control" placeholder="Handle ">
         </div>
         <div class="col">
-          <input id="addButton" type="button" class="btn btn-primary" value="Add Row">
+          <input type="button" class="btn btn-primary" value="Add Row">
         </div>
 
       </div>
@@ -50,19 +50,19 @@
           <td>Mark</td>
           <td>Otto</td>
           <td>@mdo</td>
-          <td><a class="btn btn-danger" href="#" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+          <td><a class="btn btn-primary" href="#" role="button">Remove</a></td>
         </tr>
         <tr>
           <td>Jacob</td>
           <td>Thornton</td>
           <td>@fat</td>
-          <td><a class="btn btn-danger" href="#" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+          <td><a class="btn btn-primary" href="#" role="button">Remove</a></td>
         </tr>
         <tr>
           <td>Larry</td>
           <td>the Bird</td>
           <td>@twitter</td>
-          <td><a class="btn btn-danger" href="#" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+          <td><a class="btn btn-primary" href="#" role="button">Remove</a></td>
         </tr>
       </tbody>
     </table>
@@ -76,19 +76,7 @@
     $(document).ready(function () {
 
       //Start code
-      $('#addButton').click(addNewRow);
-      function addNewRow() {
-        var first = $('#first').val();
-        var second = $('#second').val();
-        var handle = $('#handle').val();
 
-        var myRow = '<tr><td>' + first + '</td><td>' + second + '</td><td>' + handle + '</td>' +
-          '<td><a class="btn btn-danger" href="#" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>';
-
-        $('tbody').append(myRow);
-        $('input:text').val('');
-        
-      }
       //End of code
     });
   </script>
