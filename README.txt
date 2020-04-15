@@ -23,3 +23,21 @@ HTML is based on XML
  Cascading Style Sheets
  Cascading Style Sheets, fondly referred to as CSS, is a simply designed language intended to simplify the process of making web pages presentable. CSS allows you to apply styles to web pages. More importantly, CSS enables you to do this independent of the HTML that makes up each web page
  
+ REST  - Rperesentational State Transfer
+ If you have a sharepoint site called https://xyz.sharepoint.com/sites/demo =>
+ Your entry point to Sharepoint REST Api is https://xyz.sharepoint.com/sites/demo/_api
+ The methods fore REST are: GET, POST, PUT, MERGE, PATCH, DELETE, ...
+
+ Examples: 
+ yourSite/_api/web => retrieves information about that specific web
+ yourSite/_api/web/lists => Tells all properties/infomation about all the lists and libraries under that specific site
+ What if I want to see few properties of lists? Ex Title,Description,ItemCount,HiddenTitle,Description,ItemCount,Hidden
+ yourSite/_api/web/lists?$select=Title,Description,ItemCount,Hidden
+
+ How ca we limit the data showing from REST API / dont bring Hidden = true lists , use oDATA $filter
+  yourSite/_api/web/lists?$filter=Hidden eq false
+
+
+
+
+
