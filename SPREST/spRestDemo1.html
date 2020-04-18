@@ -1,0 +1,22 @@
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>  
+  function readData(url){
+    return $.ajax({
+      url: '',
+      method: "GET",
+      headers: { "Accept": "application/json; odata=verbose" }
+    });
+  }
+
+  $(document).ready(function () {
+    //Code started 
+    var url = _spPageContextInfo.webAbsoluteUrl +"/_api/web/lists/getbytitle('Expenses')/items";
+
+    readData(url).then();
+
+    //Code ended
+  });
+
+</script>
