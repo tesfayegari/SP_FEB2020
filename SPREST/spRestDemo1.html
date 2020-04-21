@@ -2,9 +2,9 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>  
-  function readData(url){
+  function readData(endPoint){
     return $.ajax({
-      url: '',
+      url: endPoint,
       method: "GET",
       headers: { "Accept": "application/json; odata=verbose" }
     });
@@ -14,7 +14,10 @@
     //Code started 
     var url = _spPageContextInfo.webAbsoluteUrl +"/_api/web/lists/getbytitle('Expenses')/items";
 
-    readData(url).then();
+    readData(url).then(function(response){
+      console.log('Data is ', response);
+
+    }, function(error){console.error('Oops error',error);});
 
     //Code ended
   });
