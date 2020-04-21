@@ -1,8 +1,11 @@
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<div id="itemsResult">
+  <h3>No items to display</h3>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>  
-  function readData(endPoint){
+<script>
+  function readData(endPoint) {
     return $.ajax({
       url: endPoint,
       method: "GET",
@@ -12,12 +15,24 @@
 
   $(document).ready(function () {
     //Code started 
-    var url = _spPageContextInfo.webAbsoluteUrl +"/_api/web/lists/getbytitle('Expenses')/items";
+    var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Expenses')/items";
 
     readData(url).then(function(response){
-      console.log('Data is ', response);
 
-    }, function(error){console.error('Oops error',error);});
+      console.log('Data is ', response);
+      var items = response.d.results;//array
+      var itemsHtml = '';
+      for(var index in items){
+        //console.log(index*1 + 1 + ' - ' +items[index].Title);
+        itemsHtml += '<div class="alert alert-primary" role="alert">' 
+                      + items[index].Title
+                     +'</div>'
+      }
+      console.log(itemsHtml);
+      // $('#itemsResult').html(itemsHtml);
+
+    },function(error){console.error('Oops error occured', error);});
+    
 
     //Code ended
   });
