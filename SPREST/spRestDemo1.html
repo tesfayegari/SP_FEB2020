@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<div id="itemsResult">
+<div id="itemsResult" class="container-fluid pt-5">
   <h3>No items to display</h3>
 </div>
 
@@ -13,26 +13,60 @@
     });
   }
 
+  function renderItemsAlert(items) {
+    var itemsHtml = '';
+    for (var index in items) {
+      //console.log(index*1 + 1 + ' - ' +items[index].Title);
+      itemsHtml += '<div class="alert alert-primary" role="alert">'
+        + items[index].Title
+        + '</div>';
+    }
+    console.log(itemsHtml);
+    $('#itemsResult').html(itemsHtml);
+  }
+
+  function renderItemsCards(items) {
+    var itemsHtml = '<div class="row">';
+    for (var index in items) {
+      //console.log(index*1 + 1 + ' - ' +items[index].Title);
+      //   itemsHtml += `
+      //   <div class="col-md-3">
+      //   <div class="card">
+      //     <div class="card-header">
+      //       ${items[index].Title}
+      //     </div>
+      //     <div class="card-body">
+      //       <h5 class="card-title">Amount: ${items[index].Amount}</h5>
+      //       <h5 class="card-title">Type: ${items[index].ExpenseType}</h5>
+      //       <p class="card-text">${items[index].Description} </p>
+      //       <a href="${_spPageContextInfo.webAbsoluteUrl + '/lists/Expenses/DispForm.aspx?ID=' + items[index].Id}" class="btn btn-primary">Expense Details</a>
+      //     </div>
+      //   </div>
+      // </div>
+      //   `;
+      itemsHtml += "\n      <div class=\"col-md-3\">\n      <div class=\"card\">\n        <div class=\"card-header\">\n          " + items[index].Title + "\n        </div>\n        <div class=\"card-body\">\n          <h5 class=\"card-title\">Amount: $" + items[index].Amount + "</h5>\n          <h5 class=\"card-title\">Type: " + items[index].ExpenseType + "</h5>\n          <p class=\"card-text\">" + items[index].Description + " </p>\n          <a href=\"" + (_spPageContextInfo.webAbsoluteUrl + '/lists/Expenses/DispForm.aspx?ID=' + items[index].Id) + "\" class=\"btn btn-primary\">Expense Details</a>\n        </div>\n      </div>\n    </div>\n      ";
+
+
+    }
+    itemsHtml += '</div>';
+    console.log(itemsHtml);
+    $('#itemsResult').html(itemsHtml);
+  }
+
   $(document).ready(function () {
     //Code started 
     var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Expenses')/items";
 
-    readData(url).then(function(response){
+    readData(url).then(function (response) {
 
       console.log('Data is ', response);
       var items = response.d.results;//array
-      var itemsHtml = '';
-      for(var index in items){
-        //console.log(index*1 + 1 + ' - ' +items[index].Title);
-        itemsHtml += '<div class="alert alert-primary" role="alert">' 
-                      + items[index].Title
-                     +'</div>'
-      }
-      console.log(itemsHtml);
-      // $('#itemsResult').html(itemsHtml);
+      renderItemsAlert(items);
+      //renderItemsCards(items);
 
-    },function(error){console.error('Oops error occured', error);});
-    
+
+    }, function (error) { console.error('Oops error occured', error); });
+
 
     //Code ended
   });
