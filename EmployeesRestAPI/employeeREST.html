@@ -1,0 +1,127 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<style>
+  #myEmployee input[type=button],
+  #myEmployee input[type=reset],
+  #myEmployee input[type=submit],
+  #myEmployee button {
+    min-width: 0em;
+  }
+</style>
+
+<div id="myEmployee" class="container-fluid mt-5">
+  <!-- Search area  -->
+  <div class="row">
+    <div class="col-md-4">
+      <button class="btn btn-outline-primary" id="btnSearch" type="button"><i class="fa fa-plus"
+          aria-hidden="true"></i></button>
+    </div>
+    <div class="col-md-8">
+      <div class="input-group mb-3">
+        <input type="search" class="form-control" id="searchEmployee" placeholder="Search Employee...">
+        <div class="input-group-append">
+          <button class="btn btn-outline-primary" id="btnSearch" type="button"><i class="fa fa-search"
+              aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+  </div> <!-- Search ends here-->
+
+  <!-- Eployee cards row start  -->
+  <div class="row" id="employeeCards">
+
+    <h2>No Employees Found</h2>
+
+  </div>
+  <!--End of Employee card row-->
+
+  <!-- pagination row  -->
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a class="page-link" href="#" tabindex="-1" id="previousPage">
+          <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="page-item disabled">
+        <a class="page-link" href="#">
+          <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#" id="nextPage">
+          <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- pagination row End  -->
+
+</div>
+
+<script>
+  function readData(endPoint) {
+    return $.ajax({
+      url: endPoint,
+      method: "GET",
+      headers: { "Accept": "application/json; odata=verbose" }
+    });
+  }
+
+  function renderEmployees(items) {
+    var emplHtml = '';
+    for (var index in items) {
+      var emp = items[index];
+      emplHtml += `
+        <div class="col-sm-4 col-md-3 mb-2">
+          <div class="card">
+            <img class="card-img-top"
+              src="${emp.Picture}"
+              alt="Card image cap" style="max-height:225px;">
+            <div class="card-body">
+              <h5 class="card-title">${emp.Title}</h5>
+              <h5 class="card-title">${emp.JobTitle}</h5>
+              <p class="card-text">${emp.Bio.substring(0, 96)}</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+        </div>
+        `;
+    }
+    $('#employeeCards').html(emplHtml);
+  }
+
+  function readAndRenderData(url){
+    readData(url).then(function (response) {
+      //Data is here 
+      var items = response.d.results;
+      EmpConfig.nextUrl = response.d["__next"];
+      console.log('Items are ', items);
+      renderEmployees(items);
+      //end of Rendering data
+    }, function (error) { console.error('Oops Error', error); });
+  }
+
+  //Global Config
+  var EmpConfig = {
+    listName: 'Employees',
+    pageSize: 12,
+    nextUrl: null
+  };
+  $(document).ready(function () {
+    //No touching 
+    var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + EmpConfig.listName + "')/items?$top=" + EmpConfig.pageSize;
+    readAndRenderData(url);
+    
+    $('#nextPage').click(function(){
+      if(EmpConfig.nextUrl){
+        readAndRenderData(EmpConfig.nextUrl);
+      }
+    });
+    //Code ends
+  });
+</script>
