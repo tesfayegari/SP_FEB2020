@@ -43,17 +43,17 @@
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
       <li class="page-item">
-        <a class="page-link" href="#employeeCards" tabindex="-1" id="previousPage">
+        <a class="page-link" href="#myEmployee" tabindex="-1" id="previousPage">
           <i class="fa fa-angle-double-left" aria-hidden="true"></i>
         </a>
       </li>
       <li class="page-item disabled">
-        <a class="page-link" href="#">
-          <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+        <a class="page-link" href="#" id="pageNumber">
+          1
         </a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="#employeeCards" id="nextPage">
+        <a class="page-link" href="#myEmployee" id="nextPage">
           <i class="fa fa-angle-double-right" aria-hidden="true"></i>
         </a>
       </li>
@@ -95,13 +95,17 @@
     $('#employeeCards').html(emplHtml);
   }
 
-  function readAndRenderData(url){
+  function readAndRenderData(url, nextClicked){
     readData(url).then(function (response) {
       //Data is here 
       var items = response.d.results;
+      if(EmpConfig.nextUrl != null && nextClicked)
+        EmpConfig.prevPageUlrs.push(EmpConfig.currentUrl);
+      EmpConfig.currentUrl = url;
       EmpConfig.nextUrl = response.d["__next"];
       console.log('Items are ', items);
       renderEmployees(items);
+      $('#pageNumber').html('Page - ' + (EmpConfig.prevPageUlrs.length + 1));
       //end of Rendering data
     }, function (error) { console.error('Oops Error', error); });
   }
@@ -110,16 +114,24 @@
   var EmpConfig = {
     listName: 'Employees',
     pageSize: 12,
-    nextUrl: null
+    nextUrl: null,
+    currentUrl: undefined,
+    prevPageUlrs: []
   };
   $(document).ready(function () {
     //No touching 
     var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + EmpConfig.listName + "')/items?$top=" + EmpConfig.pageSize;
+    EmpConfig.currentUrl = url;
     readAndRenderData(url);
     
     $('#nextPage').click(function(){
       if(EmpConfig.nextUrl){
-        readAndRenderData(EmpConfig.nextUrl);
+        readAndRenderData(EmpConfig.nextUrl, true);
+      }
+    });
+    $('#previousPage').click(function(){
+      if(EmpConfig.prevPageUlrs.length > 0){
+        readAndRenderData(EmpConfig.prevPageUlrs.pop());
       }
     });
     //Code ends
