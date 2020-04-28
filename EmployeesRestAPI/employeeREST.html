@@ -43,7 +43,7 @@
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
       <li class="page-item">
-        <a class="page-link" href="#" tabindex="-1" id="previousPage">
+        <a class="page-link" href="#employeeCards" tabindex="-1" id="previousPage">
           <i class="fa fa-angle-double-left" aria-hidden="true"></i>
         </a>
       </li>
@@ -53,7 +53,7 @@
         </a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="#" id="nextPage">
+        <a class="page-link" href="#employeeCards" id="nextPage">
           <i class="fa fa-angle-double-right" aria-hidden="true"></i>
         </a>
       </li>
@@ -85,7 +85,7 @@
             <div class="card-body">
               <h5 class="card-title">${emp.Title}</h5>
               <h5 class="card-title">${emp.JobTitle}</h5>
-              <p class="card-text">${emp.Bio.substring(0, 96)}</p>
+              <p class="card-text">${emp.Bio.substring(0, 96)} ...</p>
               <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
