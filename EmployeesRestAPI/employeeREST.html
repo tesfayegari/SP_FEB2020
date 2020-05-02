@@ -65,51 +65,51 @@
 
   <!-- Modal Form -->
   <div class="modal fade" id="newItemModal" tabindex="-1" role="dialog" aria-labelledby="newItemModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="newItemModalLabel">Add New Employee</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Form starts here  -->
-        <div class="form-group">
-          <label for="Title">Full Name</label>
-          <input type="text" class="form-control" id="Title" placeholder="John Do">
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newItemModalLabel">Add New Employee</h5>
+          <button type="button" class="close newFormButton" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <div class="form-group">
-          <label for="Phone">Phone</label>
-          <input type="text" class="form-control" id="Phone" placeholder="444-444-4444">
+        <div class="modal-body">
+          <!-- Form starts here  -->
+          <div class="form-group">
+            <label for="Title">Full Name</label>
+            <input type="text" class="form-control" id="Title" placeholder="John Do">
+          </div>
+          <div class="form-group">
+            <label for="Phone">Phone</label>
+            <input type="text" class="form-control" id="Phone" placeholder="444-444-4444">
+          </div>
+          <div class="form-group">
+            <label for="Email">Email</label>
+            <input type="email" class="form-control" id="Email" placeholder="name@example.com">
+          </div>
+          <div class="form-group">
+            <label for="JobTitle">Job Title</label>
+            <input type="text" class="form-control" id="JobTitle" placeholder="Help Desk Specialist">
+          </div>
+          <div class="form-group">
+            <label for="Picture">Picture URL</label>
+            <input type="text" class="form-control" id="Picture" placeholder="https://picture.url">
+          </div>
+          <div class="form-group">
+            <label for="Bio">Biography</label>
+            <textarea class="form-control" id="Bio" placeholder="Biography ..." rows="3"></textarea>
+          </div>
+          <!-- form ends here  -->
         </div>
-        <div class="form-group">
-          <label for="Email">Email</label>
-          <input type="email" class="form-control" id="Email" placeholder="name@example.com">
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary newFormButton" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary newFormButton" id="btnSubmitItem">Submit</button>
         </div>
-        <div class="form-group">
-          <label for="JobTitle">Job Title</label>
-          <input type="text" class="form-control" id="JobTitle" placeholder="Help Desk Specialist">
-        </div>
-        <div class="form-group">
-          <label for="Picture">Picture URL</label>
-          <input type="text" class="form-control" id="Picture" placeholder="https://picture.url">
-        </div>
-        <div class="form-group">
-          <label for="Bio">Biography</label>
-          <textarea class="form-control" id="Bio" placeholder="Biography ..." rows="3"></textarea>
-        </div>
-        <!-- form ends here  -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="btnSubmitItem">Submit</button>
       </div>
     </div>
   </div>
-</div>
-<!-- End of Modal Form  -->
+  <!-- End of Modal Form  -->
 
 </div>
 
@@ -120,6 +120,42 @@
       method: "GET",
       headers: { "Accept": "application/json; odata=verbose" }
     });
+  }
+
+  function createItem(listName, data) {
+    var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + listName + "')/items";
+    var jsonData = JSON.stringify(data);
+    return $.ajax({
+      url: url,
+      method: "POST",
+      headers: {
+        'accept': 'application/json;odata=verbose',
+        "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+        'content-type': 'application/json;odata=verbose',
+      },
+      data: jsonData
+    });
+  }
+
+  function readEmployeeForm() {
+    var item = {};
+    item.Title = $('#Title').val();
+    item.Phone = $('#Phone').val();
+    item.Email = $('#Email').val();
+    item.JobTitle = $('#JobTitle').val();
+    item.Picture = $('#Picture').val();
+    item.Bio = $('#Bio').val();
+    item['__metadata'] = { type: "SP.Data.EmployeesListItem" }
+    return item;
+  }
+
+  function clearEmployeeForm() {
+    $('#Title').val('');
+    $('#Phone').val('');
+    $('#Email').val('');
+    $('#JobTitle').val('');
+    $('#Picture').val('');
+    $('#Bio').val('');
   }
 
   function renderEmployees(items) {
@@ -202,5 +238,27 @@
       console.log('Search clicked', EmpConfig);
     });
     //Code ends
+
+    // Form Submit button click 
+    $('#btnSubmitItem').click(function () {
+      var newEmp = readEmployeeForm();
+
+      console.log('New Employee is ', newEmp);
+
+      createItem(EmpConfig.listName, newEmp).then(function (response) {
+
+        EmpConfig.nextUrl = null;
+        EmpConfig.prevPageUlrs = [];
+        readAndRenderData(url, false);
+        $('#newItemModal').modal('hide');//hides the form
+
+      }, function (error) { console.error('Oops error occured', error); });
+
+
+
+
+    });
+
+    $('.newFormButton').click(function () { clearEmployeeForm(); }); // clear form when either of the buttons clicked
   });
 </script>
