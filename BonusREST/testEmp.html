@@ -17,7 +17,7 @@
   <!-- Search area  -->
   <div class="row">
     <div class="col-md-4">
-      <button class="btn btn-outline-primary" id="btnAdd" type="button"><i class="fa fa-plus"
+      <button class="btn btn-outline-primary" id="btnSearch" type="button"><i class="fa fa-plus"
           aria-hidden="true"></i></button>
     </div>
     <div class="col-md-8">
@@ -95,13 +95,12 @@
     $('#employeeCards').html(emplHtml);
   }
 
-  function readAndRenderData(url, nextClicked) {
+  function readAndRenderData(url, nextClicked){
     readData(url).then(function (response) {
       //Data is here 
       var items = response.d.results;
-      if (EmpConfig.nextUrl != null && nextClicked) {
+      if(EmpConfig.nextUrl != null && nextClicked)
         EmpConfig.prevPageUlrs.push(EmpConfig.currentUrl);
-      }
       EmpConfig.currentUrl = url;
       EmpConfig.nextUrl = response.d["__next"];
       console.log('Items are ', items);
@@ -117,36 +116,23 @@
     pageSize: 12,
     nextUrl: null,
     currentUrl: undefined,
-    prevPageUlrs: [],
-   
+    prevPageUlrs: []
   };
   $(document).ready(function () {
     //No touching 
     var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + EmpConfig.listName + "')/items?$top=" + EmpConfig.pageSize;
     EmpConfig.currentUrl = url;
-    readAndRenderData(url, false);
-    //next page click
-    $('#nextPage').click(function () {
-      if (EmpConfig.nextUrl) {
+    readAndRenderData(url);
+    
+    $('#nextPage').click(function(){
+      if(EmpConfig.nextUrl){
         readAndRenderData(EmpConfig.nextUrl, true);
       }
     });
-    // prev page click 
-    $('#previousPage').click(function () {
-      if (EmpConfig.prevPageUlrs.length > 0) {
-        readAndRenderData(EmpConfig.prevPageUlrs.pop(), false);
+    $('#previousPage').click(function(){
+      if(EmpConfig.prevPageUlrs.length > 0){
+        readAndRenderData(EmpConfig.prevPageUlrs.pop());
       }
-    });
-    // button search  click 
-    $('#btnSearch').click(function () {
-      var searchTerm = $('#searchEmployee').val();
-      if(searchTerm != ''){
-       var filterQuery = `&$filter=substringof('${searchTerm}',Title) or substringof('${searchTerm}',JobTitle)`;
-        EmpConfig.nextUrl= null;
-        EmpConfig.prevPageUlrs= [];
-        readAndRenderData(url + filterQuery, false);        
-      }
-      console.log('Search clicked', EmpConfig);
     });
     //Code ends
   });
