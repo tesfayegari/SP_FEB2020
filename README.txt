@@ -37,6 +37,9 @@ HTML is based on XML
  How ca we limit the data showing from REST API / dont bring Hidden = true lists , use oDATA $filter
   yourSite/_api/web/lists?$filter=Hidden eq false
 
+  Reference: 
+  https://social.technet.microsoft.com/wiki/contents/articles/35796.sharepoint-2013-using-rest-api-for-selecting-filtering-sorting-and-pagination-in-sharepoint-list.aspx
+
 
 
 
