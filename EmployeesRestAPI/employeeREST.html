@@ -17,15 +17,17 @@
   <!-- Search area  -->
   <div class="row">
     <div class="col-md-4">
-      <button class="btn btn-outline-primary" id="btnAdd" type="button"><i class="fa fa-plus"
-          aria-hidden="true"></i></button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newItemModal">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </button>
     </div>
     <div class="col-md-8">
       <div class="input-group mb-3">
         <input type="search" class="form-control" id="searchEmployee" placeholder="Search Employee...">
         <div class="input-group-append">
-          <button class="btn btn-outline-primary" id="btnSearch" type="button"><i class="fa fa-search"
-              aria-hidden="true"></i></button>
+          <button class="btn btn-outline-primary" id="btnSearch" type="button">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -61,6 +63,54 @@
   </nav>
   <!-- pagination row End  -->
 
+  <!-- Modal Form -->
+  <div class="modal fade" id="newItemModal" tabindex="-1" role="dialog" aria-labelledby="newItemModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newItemModalLabel">Add New Employee</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Form starts here  -->
+        <div class="form-group">
+          <label for="Title">Full Name</label>
+          <input type="text" class="form-control" id="Title" placeholder="John Do">
+        </div>
+        <div class="form-group">
+          <label for="Phone">Phone</label>
+          <input type="text" class="form-control" id="Phone" placeholder="444-444-4444">
+        </div>
+        <div class="form-group">
+          <label for="Email">Email</label>
+          <input type="email" class="form-control" id="Email" placeholder="name@example.com">
+        </div>
+        <div class="form-group">
+          <label for="JobTitle">Job Title</label>
+          <input type="text" class="form-control" id="JobTitle" placeholder="Help Desk Specialist">
+        </div>
+        <div class="form-group">
+          <label for="Picture">Picture URL</label>
+          <input type="text" class="form-control" id="Picture" placeholder="https://picture.url">
+        </div>
+        <div class="form-group">
+          <label for="Bio">Biography</label>
+          <textarea class="form-control" id="Bio" placeholder="Biography ..." rows="3"></textarea>
+        </div>
+        <!-- form ends here  -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btnSubmitItem">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Modal Form  -->
+
 </div>
 
 <script>
@@ -76,6 +126,8 @@
     var emplHtml = '';
     for (var index in items) {
       var emp = items[index];
+      var bio = emp.Bio;
+      bio = bio ? bio.substring(0, 96) : '';
       emplHtml += `
         <div class="col-sm-4 col-md-3 mb-2">
           <div class="card">
@@ -85,7 +137,7 @@
             <div class="card-body">
               <h5 class="card-title">${emp.Title}</h5>
               <h5 class="card-title">${emp.JobTitle}</h5>
-              <p class="card-text">${emp.Bio.substring(0, 96)} ...</p>
+              <p class="card-text">${bio} ...</p>
               <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
@@ -118,11 +170,11 @@
     nextUrl: null,
     currentUrl: undefined,
     prevPageUlrs: [],
-   
+
   };
   $(document).ready(function () {
     //No touching 
-    var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + EmpConfig.listName + "')/items?$top=" + EmpConfig.pageSize;
+    var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + EmpConfig.listName + "')/items?$orderby=Created desc&$top=" + EmpConfig.pageSize;
     EmpConfig.currentUrl = url;
     readAndRenderData(url, false);
     //next page click
@@ -140,12 +192,13 @@
     // button search  click 
     $('#btnSearch').click(function () {
       var searchTerm = $('#searchEmployee').val();
-      if(searchTerm != ''){
-       var filterQuery = `&$filter=substringof('${searchTerm}',Title) or substringof('${searchTerm}',JobTitle)`;
-        EmpConfig.nextUrl= null;
-        EmpConfig.prevPageUlrs= [];
-        readAndRenderData(url + filterQuery, false);        
+      var filterQuery = '';
+      if (searchTerm != '') {
+        filterQuery = `&$filter=substringof('${searchTerm}',Title) or substringof('${searchTerm}',JobTitle)`;
       }
+      EmpConfig.nextUrl = null;
+      EmpConfig.prevPageUlrs = [];
+      readAndRenderData(url + filterQuery, false);
       console.log('Search clicked', EmpConfig);
     });
     //Code ends
