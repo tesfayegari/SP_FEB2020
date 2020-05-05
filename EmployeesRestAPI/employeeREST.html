@@ -168,7 +168,7 @@
         <div class="col-sm-4 col-md-3 mb-2">
           <div class="card">
             <img class="card-img-top"
-              src="${emp.Picture}"
+              src="${emp.Picture ? emp.Picture : 'http://dummyimage.com/250x250.png/dddddd/000000'}"
               alt="Card image cap" style="max-height:225px;">
             <div class="card-body">
               <h5 class="card-title">${emp.Title}</h5>

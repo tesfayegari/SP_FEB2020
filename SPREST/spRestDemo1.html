@@ -28,7 +28,7 @@
   function renderItemsCards(items) {
     var itemsHtml = '<div class="row">';
     for (var index in items) {
-      //console.log(index*1 + 1 + ' - ' +items[index].Title);
+      console.log(index*1 + 1 + ' - ' +items[index].Title);
       //   itemsHtml += `
       //   <div class="col-md-3 mb-2">
       //   <div class="card">
@@ -38,15 +38,14 @@
       //     <div class="card-body">
       //       <h5 class="card-title">Amount: ${items[index].Amount}</h5>
       //       <h5 class="card-title">Type: ${items[index].ExpenseType}</h5>
-      //       <p class="card-text">${items[index].Description} </p>
-      //       <a href="${_spPageContextInfo.webAbsoluteUrl + '/lists/Expenses/DispForm.aspx?ID=' + items[index].Id}" class="btn btn-primary">Expense Details</a>
+      //       <p class="card-text">${items[index].Description.substring(0,90)}... </p>
+      //       <a href="${_spPageContextInfo.webAbsoluteUrl}/lists/Expenses/DispForm.aspx?ID=${items[index].Id}" class="btn btn-primary">Expense Details</a>
       //     </div>
       //   </div>
       // </div>
-      //   `;
-      itemsHtml += "\n      <div class=\"col-md-3 mb-2\">\n      <div class=\"card\">\n        <div class=\"card-header\">\n          " + items[index].Title + "\n        </div>\n        <div class=\"card-body\">\n          <h5 class=\"card-title\">Amount: $" + items[index].Amount + "</h5>\n          <h5 class=\"card-title\">Type: " + items[index].ExpenseType + "</h5>\n          <p class=\"card-text\">" + items[index].Description.substring(0,90) + "... </p>\n          <a href=\"" + (_spPageContextInfo.webAbsoluteUrl + '/lists/Expenses/DispForm.aspx?ID=' + items[index].Id) + "\" class=\"btn btn-primary\">Expense Details</a>\n        </div>\n      </div>\n    </div>\n      ";
-
-
+      //   `; 
+      itemsHtml += "\n        <div class=\"col-md-3 mb-2\">\n        <div class=\"card\">\n          <div class=\"card-header\">\n            " + items[index].Title + "\n          </div>\n          <div class=\"card-body\">\n            <h5 class=\"card-title\">Amount: " + items[index].Amount + "</h5>\n            <h5 class=\"card-title\">Type: " + items[index].ExpenseType + "</h5>\n            <p class=\"card-text\">" + items[index].Description.substring(0, 90) + "... </p>\n            <a href=\"" + _spPageContextInfo.webAbsoluteUrl + "/lists/Expenses/DispForm.aspx?ID=" + items[index].Id + "\" class=\"btn btn-primary\">Expense Details</a>\n          </div>\n        </div>\n      </div>\n        ";
+     
     }
     itemsHtml += '</div>';
     console.log(itemsHtml);
