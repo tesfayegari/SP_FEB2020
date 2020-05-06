@@ -11,7 +11,9 @@
   #myEmployee button {
     min-width: 0em;
   }
-  #myEmployee .card-body a:visited{color:#fff}
+  #myEmployee a:visited,
+  #myEmployee a
+  {color:#fff !important}
 </style>
 
 <div id="myEmployee" class="container-fluid mt-5">
@@ -115,6 +117,7 @@
 </div>
 
 <script>
+  //jQuery REST API Read SharePoint Data
   function readData(endPoint) {
     return $.ajax({
       url: endPoint,
@@ -160,21 +163,34 @@
   }
 
   function renderEmployees(items) {
-    var emplHtml = '';
+    var emplHtml = `
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Full Name</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Email</th>
+              <th scope="col">Job Title</th>
+              <th scope="col">Photo</th>
+              <th scope="col">View/Edit/Delete</th>
+            </tr>
+          </thead>
+        <tbody>`;
     for (var index in items) {
-      var emp = items[index];
-      var bio = emp.Bio;
-      bio = bio ? bio.substring(0, 96) : '';
-      emplHtml += `
-        <div class="col-sm-4 col-md-3 mb-2">
-          <div class="card">
-            <img class="card-img-top"
-              src="${emp.Picture ? emp.Picture : 'http://dummyimage.com/250x250.png/dddddd/000000'}"
-              alt="Card image cap" style="max-height:225px;">
-            <div class="card-body">
-              <h5 class="card-title">${emp.Title}</h5>
-              <h5 class="card-title">${emp.JobTitle}</h5>
-              <p class="card-text">${bio} ...</p>
+      var emp = items[index];   
+
+      emplHtml += `      
+          <tr>           
+            <td>${emp.Title}</td>
+            <td>${emp.Phone}</td>
+            <td>${emp.Email}</td>
+            <td>${emp.JobTitle}</td>
+            <td>
+              <img class="card-img-top"
+              src="${emp.Picture ? emp.Picture : 'https://cdn0.iconfinder.com/data/icons/classic-icons/512/056.png'}"
+                  style="width:60px; background-color: lightblue;">
+            </td>
+            <td>
               <a href="https://tgari2018.sharepoint.com/sites/demoFeb2020/Lists/Employees/DispForm.aspx?ID=${emp.Id}&Source=${window.location.href}" class="btn btn-primary mr-2">See Details</a>
               <a href="#" class="btn btn-success" id="editButton">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -182,11 +198,13 @@
               <a href="#" class="btn btn-danger" id="deleteButton">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </a>
-            </div>
-          </div>
-        </div>
-        `;
+            </td>            
+          </tr>         
+            `;
     }
+    emplHtml +=` 
+        </tbody>
+      </table>`;
     $('#employeeCards').html(emplHtml);
   }
 
@@ -206,7 +224,7 @@
     }, function (error) { console.error('Oops Error', error); });
   }
 
-  //Global Config
+  //Global Configuration
   var EmpConfig = {
     listName: 'Employees',
     pageSize: 12,
