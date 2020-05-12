@@ -11,7 +11,10 @@
   #myEmployee button {
     min-width: 0em;
   }
-  #myEmployee .card-body a:visited{color:#fff}
+
+  #myEmployee .card-body a:visited {
+    color: #fff
+  }
 </style>
 
 <div id="myEmployee" class="container-fluid mt-5">
@@ -115,6 +118,7 @@
 </div>
 
 <script>
+  // Reding sharepoint data 
   function readData(endPoint) {
     return $.ajax({
       url: endPoint,
@@ -123,6 +127,7 @@
     });
   }
 
+  // Create SharePoint list items 
   function createItem(listName, data) {
     var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + listName + "')/items";
     var jsonData = JSON.stringify(data);
@@ -138,6 +143,39 @@
     });
   }
 
+  // Delete SharePoint items 
+  function deleteItemByID(listName, itemId) {
+    var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + listName + "')/items(" + itemId + ")";
+
+    return $.ajax({
+      url: url,
+      method: "POST",
+      headers: {
+        'accept': 'application/json;odata=verbose',
+        "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+        'content-type': 'application/json;odata=verbose',
+        "IF-MATCH": "*",
+        "X-HTTP-Method": "DELETE"
+      }
+    });
+  }
+
+  function deleteEmployee(itemId) {
+    console.log('You Are about to delete Item ID', itemId);
+    if (confirm('Are you sure you want to delete Employee ID ', itemId)) {
+      deleteItemByID(EmpConfig.listName, itemId).then(function (response) {
+        console.log('Deleted item id ', itemId, response);
+        refresh();
+      }, function (error) { console.error('Oops can not delete item ', error); });
+    }
+  }
+
+  function refresh() {
+    var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + EmpConfig.listName + "')/items?$orderby=Created desc&$top=" + EmpConfig.pageSize;
+    EmpConfig.nextUrl = null;
+    EmpConfig.prevPageUlrs = [];
+    readAndRenderData(url, true);
+  }
   function readEmployeeForm() {
     var item = {};
     item.Title = $('#Title').val();
@@ -174,12 +212,14 @@
             <div class="card-body">
               <h5 class="card-title">${emp.Title}</h5>
               <h5 class="card-title">${emp.JobTitle}</h5>
+              <h5 class="card-title">Phone: ${emp.Phone}</h5>
+              <h5 class="card-title">Email: ${emp.Email}</h5>
               <p class="card-text">${bio} ...</p>
               <a href="https://tgari2018.sharepoint.com/sites/demoFeb2020/Lists/Employees/DispForm.aspx?ID=${emp.Id}&Source=${window.location.href}" class="btn btn-primary mr-2">See Details</a>
-              <a href="#" class="btn btn-success" id="editButton">
+              <a href="https://tgari2018.sharepoint.com/sites/demoFeb2020/Lists/Employees/EditForm.aspx?ID=${emp.Id}&Source=${window.location.href}" class="btn btn-success" id="editButton">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
               </a>
-              <a href="#" class="btn btn-danger" id="deleteButton">
+              <a href="#" class="btn btn-danger" onclick="deleteEmployee(${emp.Id})">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </a>
             </div>
@@ -251,17 +291,15 @@
       var newEmp = readEmployeeForm();
 
       console.log('New Employee is ', newEmp);
-      if(newEmp.Title == ''){
+      if (newEmp.Title == '') {
         alert('Title can not be empty');
         return;
       }
       $('#newItemModal').modal('hide');//hides the form
       createItem(EmpConfig.listName, newEmp).then(function (response) {
-        
-        EmpConfig.nextUrl = null;
-        EmpConfig.prevPageUlrs = [];
-        readAndRenderData(url, false);
-        
+
+        refresh();
+
 
       }, function (error) { console.error('Oops error occured', error); });
 
